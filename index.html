@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autosconti.ch — Promozioni auto Svizzera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f9fb; --bg-elevated: #ffffff;
+    --ink: #0a1628; --ink-soft: #4a5568; --muted: #8a95a8;
+    --line: #e3e8ef; --line-soft: #f0f3f7;
+    --primary: #0066ff; --primary-dark: #0052cc; --primary-light: #e6f0ff;
+    --accent: #00d4ff; --success: #00b86b; --warning: #ff8800;
+    --shadow-sm: 0 1px 2px rgba(10,22,40,0.04), 0 1px 3px rgba(10,22,40,0.06);
+    --shadow: 0 4px 6px -1px rgba(10,22,40,0.06), 0 2px 4px -1px rgba(10,22,40,0.04);
+    --shadow-lg: 0 20px 25px -5px rgba(10,22,40,0.08), 0 10px 10px -5px rgba(10,22,40,0.02);
+    --shadow-xl: 0 25px 50px -12px rgba(10,22,40,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Manrope', -apple-system, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh; overflow-x: hidden;
+  }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(248, 249, 251, 0.85);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner {
+    max-width: 1280px; margin: 0 auto; padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--ink);
+    font-weight: 800; font-size: 19px; letter-spacing: -0.02em;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800; font-size: 16px;
+  }
+  nav { display: flex; gap: 8px; align-items: center; }
+  nav a {
+    color: var(--ink-soft); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    padding: 8px 16px; border-radius: 8px; transition: all 0.15s;
+  }
+  nav a:hover { background: var(--line-soft); color: var(--ink); }
+  nav a.cta { background: var(--ink); color: white; padding: 10px 20px; font-weight: 600; }
+  nav a.cta:hover { background: var(--primary); transform: translateY(-1px); box-shadow: var(--shadow); }
+
+  .hero {
+    max-width: 1280px; margin: 0 auto;
+    padding: 80px 32px 60px; text-align: center; position: relative;
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, var(--primary-light) 0%, transparent 60%);
+    z-index: -1; opacity: 0.6;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid var(--line);
+    padding: 8px 16px; border-radius: 100px;
+    font-size: 13px; font-weight: 500; color: var(--ink-soft);
+    margin-bottom: 24px; box-shadow: var(--shadow-sm);
+  }
+  .hero-badge-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--success); animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 184, 107, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(0, 184, 107, 0); }
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 72px); line-height: 1.05;
+    font-weight: 800; letter-spacing: -0.035em;
+    margin-bottom: 20px; color: var(--ink);
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero p { font-size: 18px; color: var(--ink-soft); max-width: 580px; margin: 0 auto 40px; }
+
+  .search-card {
+    max-width: 760px; margin: 0 auto;
+    background: white; border-radius: 20px; padding: 8px;
+    box-shadow: var(--shadow-xl); border: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1fr auto; gap: 4px;
+  }
+  .search-field {
+    padding: 18px 20px; border-radius: 14px;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .search-field:hover { background: var(--line-soft); }
+  .search-field-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+  }
+  .search-field select {
+    width: 100%; border: none; background: transparent;
+    font-family: inherit; font-size: 16px; font-weight: 600;
+    color: var(--ink); cursor: pointer; appearance: none;
+    padding-right: 20px;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%230066ff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right center; outline: none;
+  }
+  .search-field select:disabled { color: var(--muted); cursor: not-allowed; opacity: 0.6; }
+  .search-divider { width: 1px; background: var(--line); margin: 12px 0; }
+  .search-btn {
+    background: var(--primary); color: white;
+    border: none; border-radius: 14px; padding: 0 32px;
+    font-family: inherit; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  }
+  .search-btn:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); }
+
+  .hero-stats { display: flex; justify-content: center; gap: 48px; margin-top: 60px; }
+  .stat { text-align: center; }
+  .stat-number {
+    font-size: 36px; font-weight: 800; color: var(--primary);
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+  section.content { max-width: 1280px; margin: 0 auto; padding: 80px 32px; }
+  .section-header { margin-bottom: 40px; }
+  .section-eyebrow {
+    font-size: 12px; font-weight: 600; color: var(--primary);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .section-eyebrow::before {
+    content: ''; width: 24px; height: 2px; background: var(--primary); display: inline-block;
+  }
+  .section-title {
+    font-size: clamp(28px, 4vw, 42px); line-height: 1.1;
+    font-weight: 800; letter-spacing: -0.025em;
+    color: var(--ink); max-width: 600px;
+  }
+  .featured-grid {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 20px;
+  }
+  .deal-card {
+    background: white; border: 1px solid var(--line);
+    border-radius: 20px; padding: 32px;
+    text-decoration: none; color: inherit;
+    transition: all 0.25s; position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+    justify-content: space-between; min-height: 280px;
+  }
+  .deal-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+  .deal-card.featured {
+    background: linear-gradient(135deg, var(--ink) 0%, #1a2942 100%);
+    color: white; border: none;
+    grid-row: span 2; min-height: 580px;
+  }
+  .deal-card.featured::before {
+    content: ''; position: absolute;
+    top: -50%; right: -30%; width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 60%); opacity: 0.35;
+  }
+  .deal-card-content { position: relative; z-index: 1; }
+  .deal-brand-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .deal-brand-info { display: flex; align-items: center; gap: 10px; }
+  .deal-brand { font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: -0.01em; }
+  .deal-card.featured .deal-brand { color: rgba(255,255,255,0.6); }
+  .deal-badge {
+    background: var(--primary-light); color: var(--primary);
+    padding: 4px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .deal-badge.hot { background: #ffe8e8; color: #d92e2e; }
+  .deal-badge.zero { background: #e8f5ee; color: var(--success); }
+  .deal-badge.new { background: #fff4e6; color: var(--warning); }
+  .deal-badge.top { background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%); color: white; }
+  .deal-card.featured .deal-badge { background: rgba(255,255,255,0.15); color: white; backdrop-filter: blur(10px); }
+  .deal-title { font-size: 20px; font-weight: 700; line-height: 1.25; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .deal-card.featured .deal-title { font-size: 36px; line-height: 1.1; margin-bottom: 20px; }
+  .deal-value {
+    font-size: 48px; font-weight: 800; line-height: 1;
+    letter-spacing: -0.04em; color: var(--primary);
+    margin: 16px 0 8px;
+  }
+  .deal-value.rate { color: var(--success); }
+  .deal-value .unit { font-size: 18px; font-weight: 600; color: var(--muted); margin-left: 6px; }
+  .deal-card.featured .deal-value { font-size: 84px; color: white; }
+  .deal-card.featured .deal-value .unit { color: rgba(255,255,255,0.6); font-size: 24px; }
+  .deal-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin-bottom: 16px; }
+  .deal-card.featured .deal-desc { color: rgba(255,255,255,0.75); font-size: 16px; max-width: 400px; }
+  .deal-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--muted);
+    padding-top: 16px; border-top: 1px solid var(--line-soft);
+  }
+  .deal-card.featured .deal-footer { color: rgba(255,255,255,0.5); border-top-color: rgba(255,255,255,0.1); }
+  .deal-arrow { color: var(--primary); font-weight: 600; font-size: 13px; }
+  .deal-card.featured .deal-arrow { color: var(--accent); }
+
+  /* BRAND LOGOS — iniziali stilizzate */
+  .brand-logo {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800;
+    font-size: 13px; letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .brand-logo.small { width: 28px; height: 28px; font-size: 11px; border-radius: 6px; }
+  .brand-logo.large { width: 56px; height: 56px; font-size: 18px; border-radius: 12px; }
+
+  /* Brand colors */
+  .brand-logo[data-brand="Renault"] { background: #FFCC33; color: #000; }
+  .brand-logo[data-brand="Toyota"] { background: #EB0A1E; }
+  .brand-logo[data-brand="Volkswagen"] { background: #001E50; }
+  .brand-logo[data-brand="BMW"] { background: linear-gradient(135deg, #0066B1 50%, #fff 50%); color: #000; }
+  .brand-logo[data-brand="Mercedes-Benz"] { background: #1F1F1F; }
+  .brand-logo[data-brand="Hyundai"] { background: #002C5F; }
+  .brand-logo[data-brand="Skoda"] { background: #4BA82E; }
+  .brand-logo[data-brand="Peugeot"] { background: #1B1B1B; }
+  .brand-logo[data-brand="Citroen"] { background: #DA291C; }
+  .brand-logo[data-brand="MG"] { background: #D40000; }
+  .brand-logo[data-brand="Fiat"] { background: #A4001E; }
+  .brand-logo[data-brand="Alfa Romeo"] { background: linear-gradient(135deg, #B91D2F 50%, #002F5F 50%); }
+  .brand-logo[data-brand="Jeep"] { background: #2F4F2F; }
+  .brand-logo[data-brand="Audi"] { background: #BB0A30; }
+  .brand-logo[data-brand="Tesla"] { background: #CC0000; }
+  .brand-logo[data-brand="Volvo"] { background: #1C2C5B; }
+  .brand-logo[data-brand="Kia"] { background: #05141F; }
+  .brand-logo[data-brand="Nissan"] { background: #C3002F; }
+  .brand-logo[data-brand="Opel"] { background: #F7FF14; color: #000; }
+  .brand-logo[data-brand="Ford"] { background: #003478; }
+
+  .brands-section {
+    background: white; margin: 0;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .brands-section .content { padding: 80px 32px; }
+  .brands-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px;
+  }
+  .brand-tile {
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: 14px; padding: 24px 20px;
+    text-align: center; text-decoration: none;
+    color: inherit; transition: all 0.2s;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .brand-tile:hover:not(.disabled) {
+    transform: translateY(-2px); border-color: var(--primary);
+    background: white; box-shadow: var(--shadow);
+  }
+  .brand-tile:hover:not(.disabled) .brand-tile-name { color: var(--primary); }
+  .brand-tile.disabled { opacity: 0.4; cursor: not-allowed; }
+  .brand-tile.disabled .brand-logo { filter: grayscale(1); }
+  .brand-tile-name {
+    font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+    color: var(--ink); transition: color 0.15s;
+  }
+  .brand-tile-meta { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .brand-tile-meta.active { color: var(--primary); }
+
+  .categories-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .category-card {
+    background: white; border: 1px solid var(--line);
+    border-radius: 16px; padding: 28px 24px;
+    text-decoration: none; color: inherit;
+    transition: all 0.2s; display: block;
+  }
+  .category-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: var(--shadow); }
+  .category-icon {
+    width: 48px; height: 48px;
+    background: var(--primary-light); color: var(--primary);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800;
+    margin-bottom: 20px; transition: all 0.2s;
+  }
+  .category-card:hover .category-icon { background: var(--primary); color: white; }
+  .category-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .category-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 12px; }
+  .category-count { font-size: 12px; font-weight: 600; color: var(--primary); }
+
+  .cta-section {
+    background: linear-gradient(135deg, var(--ink) 0%, #1a2942 100%);
+    color: white; padding: 80px 32px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ''; position: absolute;
+    top: -50%; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 60%); opacity: 0.2;
+  }
+  .cta-inner { max-width: 700px; margin: 0 auto; position: relative; }
+  .cta-section h2 {
+    font-size: clamp(32px, 5vw, 56px); font-weight: 800;
+    line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px;
+  }
+  .cta-section h2 .accent {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .cta-section p { font-size: 17px; opacity: 0.7; margin-bottom: 32px; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; color: var(--ink);
+    padding: 16px 32px; border-radius: 12px;
+    text-decoration: none; font-weight: 600; font-size: 15px; transition: all 0.15s;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+  footer { background: white; border-top: 1px solid var(--line); padding: 32px; }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--muted);
+  }
+  .loading { text-align: center; padding: 100px 20px; color: var(--muted); }
+  .loading-spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--line); border-top-color: var(--primary);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 968px) {
+    .featured-grid { grid-template-columns: 1fr 1fr; }
+    .deal-card.featured { grid-row: span 1; grid-column: span 2; min-height: 400px; }
+    .deal-card.featured .deal-title { font-size: 28px; }
+    .deal-card.featured .deal-value { font-size: 60px; }
+    .categories-grid { grid-template-columns: 1fr 1fr; }
+    .search-card { grid-template-columns: 1fr; }
+    .search-divider { display: none; }
+    .search-btn { padding: 18px; }
+  }
+  @media (max-width: 640px) {
+    .header-inner { padding: 14px 20px; }
+    nav { gap: 4px; }
+    nav a { padding: 8px 12px; font-size: 13px; }
+    .hero { padding: 60px 20px 40px; }
+    section.content { padding: 60px 20px; }
+    .brands-section .content { padding: 60px 20px; }
+    .featured-grid { grid-template-columns: 1fr; }
+    .deal-card.featured { grid-column: span 1; }
+    .categories-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+    .stat-number { font-size: 28px; }
+    .cta-section { padding: 60px 20px; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .deal-card, .brand-tile, .category-card { animation: fadeUp 0.5s ease-out backwards; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">A</span>
+      autosconti<span style="color: var(--primary)">.ch</span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#offerte">Offerte</a>
+      <a href="#marche">Marche</a>
+      <a href="autosconti-ch-v2.html" class="cta">Cerca →</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    <span id="hero-update-date">Aggiornato in tempo reale</span>
+  </div>
+  <h1>Trova lo sconto<br>per la <span class="accent">tua auto.</span></h1>
+  <p>Tutte le promozioni ufficiali degli importatori svizzeri, in un solo posto. Bonus, leasing, premi stock. Database verificato.</p>
+
+  <div class="search-card">
+    <div class="search-field">
+      <div class="search-field-label">Marca</div>
+      <select id="heroBrand" onchange="onHeroBrandChange()">
+        <option value="">Tutte le marche</option>
+      </select>
+    </div>
+    <div class="search-divider"></div>
+    <div class="search-field">
+      <div class="search-field-label">Modello</div>
+      <select id="heroModel" disabled>
+        <option value="">Tutti i modelli</option>
+      </select>
+    </div>
+    <button class="search-btn" onclick="goToSearch()">Cerca offerte <span>→</span></button>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-number" id="statBrands">—</div>
+      <div class="stat-label">Marche monitorate</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" id="statModels">—</div>
+      <div class="stat-label">Modelli con offerte</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" id="statDeals">—</div>
+      <div class="stat-label">Promozioni attive</div>
+    </div>
+  </div>
+</section>
+
+<div id="loading" class="loading">
+  <div class="loading-spinner"></div>
+  <p>Caricamento offerte…</p>
+</div>
+
+<div id="main-content" style="display: none;">
+
+  <section class="content" id="offerte">
+    <div class="section-header">
+      <div class="section-eyebrow">In evidenza</div>
+      <h2 class="section-title">Le migliori promozioni<br>del momento.</h2>
+    </div>
+    <div class="featured-grid" id="featured-grid"></div>
+  </section>
+
+  <section class="brands-section" id="marche">
+    <div class="content">
+      <div class="section-header">
+        <div class="section-eyebrow">Per marca</div>
+        <h2 class="section-title">Esplora per costruttore.</h2>
+      </div>
+      <div class="brands-grid" id="brands-grid"></div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="section-header">
+      <div class="section-eyebrow">Per tipo</div>
+      <h2 class="section-title">Filtra per categoria di offerta.</h2>
+    </div>
+    <div class="categories-grid" id="categories-grid"></div>
+  </section>
+
+</div>
+
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>Pronto a trovare<br>la <span class="accent">tua occasione?</span></h2>
+    <p>Apri la ricerca avanzata, seleziona marca e modello, e visualizza tutte le promozioni ufficiali in corso.</p>
+    <a href="autosconti-ch-v2.html" class="cta-btn">Vai alla ricerca <span>→</span></a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span>© 2026 Autosconti.ch</span>
+    <span id="footer-update">Database verificato manualmente</span>
+    <span>Mercato CH · DE / FR / IT</span>
+  </div>
+</footer>
+
+<script>
+// Configurazione marchi con sigle stilizzate
+const BRAND_LOGOS = {
+  "Renault": "R",
+  "Toyota": "T",
+  "Volkswagen": "VW",
+  "BMW": "BMW",
+  "Mercedes-Benz": "MB",
+  "Hyundai": "H",
+  "Skoda": "Š",
+  "Peugeot": "P",
+  "Citroen": "C",
+  "MG": "MG",
+  "Fiat": "F",
+  "Alfa Romeo": "AR",
+  "Jeep": "J",
+  "Audi": "A",
+  "Tesla": "T",
+  "Volvo": "V",
+  "Kia": "K",
+  "Nissan": "N",
+  "Opel": "O",
+  "Ford": "F"
+};
+
+const ALL_BRANDS_LIST = [
+  "Renault", "Toyota", "Volkswagen",
+  "BMW", "Mercedes-Benz", "Hyundai", "Skoda",
+  "Peugeot", "Citroen", "MG",
+  "Fiat", "Alfa Romeo", "Jeep",
+  // In arrivo
+  "Audi", "Tesla", "Volvo", "Kia", "Nissan", "Opel", "Ford"
+];
+
+let dealsDatabase = {};
+
+function brandLogo(brand, size = '') {
+  const sigla = BRAND_LOGOS[brand] || brand.substring(0, 2).toUpperCase();
+  return `<span class="brand-logo ${size}" data-brand="${brand}">${sigla}</span>`;
+}
+
+async function loadData() {
+  try {
+    const response = await fetch('deals_database.json');
+    if (!response.ok) throw new Error('JSON non disponibile');
+    return await response.json();
+  } catch (err) {
+    console.warn('Uso dati embedded:', err.message);
+    return getEmbeddedData();
+  }
+}
+
+function getEmbeddedData() {
+  return {
+    "Renault": { sourceUrl: "https://de.renault.ch/angebote.html", lastVerified: "12.05.2026", validity: "01.04.2026 — 30.06.2026", models: {
+      "Renault 4": { listPrice: 29500, deals: [{ tag: "0% LEASING", value: "0%", isRate: true, title: "Leasing 0% E-Tech", desc: "0% TAEG con manutenzione e assicurazione." }]},
+      "Captur": { listPrice: 27600, deals: [{ tag: "BONUS", value: "CHF 2'000", title: "Bonus Captur", desc: "Bonus finanziamento al livello massimo." }]}
+    }},
+    "Toyota": { sourceUrl: "https://de.toyota.ch/toyota-angebote", lastVerified: "12.05.2026", validity: "01.05.2026 — 30.06.2026", models: {
+      "Yaris Cross": { listPrice: 25900, deals: [{ tag: "PRÄMIE", value: "CHF 5'000", title: "Premio Yaris Cross", desc: "Bonus diretto record di CHF 5'000." }]}
+    }}
+  };
+}
+
+function extractAllDeals(database) {
+  const allDeals = [];
+  for (const [brand, brandData] of Object.entries(database)) {
+    for (const [model, modelData] of Object.entries(brandData.models || {})) {
+      for (const deal of modelData.deals || []) {
+        if (deal.excluded) continue;
+        allDeals.push({ brand, model, listPrice: modelData.listPrice, validity: brandData.validity, ...deal });
+      }
+    }
+  }
+  return allDeals;
+}
+
+function getNumericValue(deal) {
+  if (deal.isRate) return -parseFloat(deal.value);
+  const match = String(deal.value).match(/[\d']+/);
+  if (!match) return 0;
+  return parseInt(match[0].replace(/'/g, ''));
+}
+
+function scoreImpact(deal) {
+  let score = 0;
+  if (deal.value && deal.value.includes("CHF")) {
+    const amount = getNumericValue(deal);
+    if (amount >= 5000) score += 100;
+    else if (amount >= 3000) score += 70;
+    else if (amount >= 2000) score += 50;
+    else if (amount >= 1000) score += 30;
+  }
+  if (deal.isRate) {
+    const rate = parseFloat(deal.value);
+    if (rate === 0) score += 90;
+    else if (rate < 1) score += 70;
+    else if (rate < 2) score += 40;
+  }
+  if (deal.tag && deal.tag.includes("LAGER")) score += 20;
+  if (deal.tag && deal.tag.includes("SWISS")) score += 20;
+  if (deal.tag && deal.tag.includes("PREISVORTEIL")) {
+    const amount = getNumericValue(deal);
+    if (amount >= 15000) score += 80;
+    else if (amount >= 10000) score += 60;
+  }
+  return score;
+}
+
+function getBadge(deal) {
+  if (deal.isRate && parseFloat(deal.value) === 0) return { text: '0% TAEG', cls: 'zero' };
+  if (deal.isRate && parseFloat(deal.value) < 1) return { text: 'TASSO BASSO', cls: 'zero' };
+  if (deal.value && deal.value.includes("CHF")) {
+    const amount = getNumericValue(deal);
+    if (amount >= 5000) return { text: 'TOP', cls: 'top' };
+    if (amount >= 3000) return { text: 'HOT', cls: 'hot' };
+  }
+  if (deal.tag && deal.tag.includes("LAGER")) return { text: 'STOCK', cls: 'new' };
+  if (deal.tag && deal.tag.includes("PREISVORTEIL")) return { text: 'SCONTO', cls: 'hot' };
+  return null;
+}
+
+function getHeroTitle(deal) {
+  if (deal.isRate && parseFloat(deal.value) === 0) return `Leasing a <span style="color: var(--accent)">zero</span> per cento`;
+  if (deal.value && deal.value.includes('CHF')) {
+    const amount = getNumericValue(deal);
+    if (amount >= 5000) return `Bonus <span style="color: var(--accent)">record</span> del momento`;
+    if (amount >= 3000) return `Premio <span style="color: var(--accent)">top</span> della categoria`;
+  }
+  return deal.title;
+}
+
+function renderFeatured(allDeals) {
+  const top = [...allDeals].sort((a, b) => scoreImpact(b) - scoreImpact(a)).slice(0, 5);
+  const grid = document.getElementById('featured-grid');
+  grid.innerHTML = '';
+  if (top.length === 0) { grid.innerHTML = '<p style="color: var(--muted);">Nessuna offerta.</p>'; return; }
+
+  const hero = top[0];
+  const heroBadge = getBadge(hero);
+  grid.innerHTML += `
+    <a href="autosconti-ch-v2.html?brand=${encodeURIComponent(hero.brand)}" class="deal-card featured">
+      <div class="deal-card-content">
+        <div class="deal-brand-row">
+          <div class="deal-brand-info">
+            ${brandLogo(hero.brand, 'large')}
+            <div class="deal-brand">${hero.brand} · ${hero.model}</div>
+          </div>
+          ${heroBadge ? `<div class="deal-badge">${heroBadge.text}</div>` : ''}
+        </div>
+        <div class="deal-title">${getHeroTitle(hero)}</div>
+      </div>
+      <div class="deal-card-content">
+        <div class="deal-value">${hero.value}${hero.isRate ? '<span class="unit">TAEG</span>' : ''}</div>
+        <p class="deal-desc">${hero.desc || hero.title}</p>
+        <div class="deal-footer">
+          <span>${hero.validity || 'In corso'}</span>
+          <span class="deal-arrow">Scopri di più →</span>
+        </div>
+      </div>
+    </a>`;
+
+  for (let i = 1; i < Math.min(top.length, 5); i++) {
+    const d = top[i];
+    const badge = getBadge(d);
+    grid.innerHTML += `
+      <a href="autosconti-ch-v2.html?brand=${encodeURIComponent(d.brand)}" class="deal-card" style="animation-delay: ${i * 0.05}s;">
+        <div>
+          <div class="deal-brand-row">
+            <div class="deal-brand-info">
+              ${brandLogo(d.brand)}
+              <div class="deal-brand">${d.brand} · ${d.model}</div>
+            </div>
+            ${badge ? `<div class="deal-badge ${badge.cls}">${badge.text}</div>` : ''}
+          </div>
+          <div class="deal-title">${d.title}</div>
+          <div class="deal-value ${d.isRate ? 'rate' : ''}">${d.value}${d.isRate ? '<span class="unit">TAEG</span>' : ''}</div>
+          <p class="deal-desc">${d.desc || ''}</p>
+        </div>
+        <div class="deal-footer">
+          <span>${d.validity || 'In corso'}</span>
+          <span class="deal-arrow">→</span>
+        </div>
+      </a>`;
+  }
+}
+
+function renderBrands(database) {
+  const grid = document.getElementById('brands-grid');
+  grid.innerHTML = '';
+  ALL_BRANDS_LIST.forEach((brand, i) => {
+    const data = database[brand];
+    const hasData = !!data;
+    const modelCount = hasData ? Object.keys(data.models).length : 0;
+    grid.innerHTML += `
+      <a href="${hasData ? 'autosconti-ch-v2.html?brand=' + encodeURIComponent(brand) : '#'}"
+         class="brand-tile ${hasData ? '' : 'disabled'}"
+         style="animation-delay: ${i * 0.02}s;">
+        ${brandLogo(brand, 'large')}
+        <div>
+          <div class="brand-tile-name">${brand}</div>
+          <div class="brand-tile-meta ${hasData ? 'active' : ''}">
+            ${hasData ? `${modelCount} modell${modelCount === 1 ? 'o' : 'i'}` : 'in arrivo'}
+          </div>
+        </div>
+      </a>`;
+  });
+}
+
+function renderCategories(allDeals) {
+  const cats = {
+    zero: allDeals.filter(d => d.isRate && parseFloat(d.value) < 1).length,
+    bonus: allDeals.filter(d => d.value && d.value.includes('CHF') && getNumericValue(d) >= 1000).length,
+    stock: allDeals.filter(d => d.tag && (d.tag.includes('LAGER') || d.tag.includes('STOCK'))).length,
+    warranty: allDeals.filter(d => d.value === 'GRATIS' || (d.title && d.title.toLowerCase().includes('garanzia'))).length,
+  };
+  document.getElementById('categories-grid').innerHTML = `
+    <a href="autosconti-ch-v2.html" class="category-card">
+      <div class="category-icon">0%</div>
+      <h3>Leasing zero</h3>
+      <p>Tassi a zero o quasi su elettrici e plug-in hybrid</p>
+      <span class="category-count">${cats.zero} offerte attive</span>
+    </a>
+    <a href="autosconti-ch-v2.html" class="category-card">
+      <div class="category-icon">€</div>
+      <h3>Bonus diretti</h3>
+      <p>Da CHF 1'000 a CHF 7'000 di sconto immediato</p>
+      <span class="category-count">${cats.bonus} offerte attive</span>
+    </a>
+    <a href="autosconti-ch-v2.html" class="category-card">
+      <div class="category-icon">★</div>
+      <h3>Stock & speciali</h3>
+      <p>Premi stock e edizioni speciali a tempo</p>
+      <span class="category-count">${cats.stock} offerte attive</span>
+    </a>
+    <a href="autosconti-ch-v2.html" class="category-card">
+      <div class="category-icon">+</div>
+      <h3>Garanzia estesa</h3>
+      <p>4-10 anni di garanzia inclusa nel prezzo</p>
+      <span class="category-count">${cats.warranty} offerte attive</span>
+    </a>`;
+}
+
+function populateHeroSearch(database) {
+  const brandSelect = document.getElementById('heroBrand');
+  brandSelect.innerHTML = '<option value="">Tutte le marche</option>';
+  Object.keys(database).sort().forEach(brand => {
+    const opt = document.createElement('option');
+    opt.value = brand;
+    opt.textContent = brand;
+    brandSelect.appendChild(opt);
+  });
+}
+
+function onHeroBrandChange() {
+  const brand = document.getElementById('heroBrand').value;
+  const modelSelect = document.getElementById('heroModel');
+  modelSelect.innerHTML = '<option value="">Tutti i modelli</option>';
+  if (brand && dealsDatabase[brand]) {
+    Object.keys(dealsDatabase[brand].models).forEach(model => {
+      const opt = document.createElement('option');
+      opt.value = model;
+      opt.textContent = model;
+      modelSelect.appendChild(opt);
+    });
+    modelSelect.disabled = false;
+  } else {
+    modelSelect.disabled = true;
+  }
+}
+
+function goToSearch() {
+  const brand = document.getElementById('heroBrand').value;
+  const model = document.getElementById('heroModel').value;
+  let url = 'autosconti-ch-v2.html';
+  const params = [];
+  if (brand) params.push('brand=' + encodeURIComponent(brand));
+  if (model) params.push('model=' + encodeURIComponent(model));
+  if (params.length > 0) url += '?' + params.join('&');
+  window.location.href = url;
+}
+
+async function init() {
+  dealsDatabase = await loadData();
+  const allDeals = extractAllDeals(dealsDatabase);
+  document.getElementById('statBrands').textContent = Object.keys(dealsDatabase).length;
+  document.getElementById('statModels').textContent = Object.values(dealsDatabase).reduce((sum, b) => sum + Object.keys(b.models).length, 0);
+  document.getElementById('statDeals').textContent = allDeals.length;
+  const now = new Date();
+  const months = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+  document.getElementById('hero-update-date').textContent = `Aggiornato ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  const lastUpdate = Object.values(dealsDatabase)[0]?.lastVerified || '—';
+  document.getElementById('footer-update').textContent = `Ultimo aggiornamento: ${lastUpdate}`;
+  populateHeroSearch(dealsDatabase);
+  renderFeatured(allDeals);
+  renderBrands(dealsDatabase);
+  renderCategories(allDeals);
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('main-content').style.display = 'block';
+}
+init();
+</script>
+
+</body>
+</html>

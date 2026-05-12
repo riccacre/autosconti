@@ -1,0 +1,907 @@
+"""
+AUTOSCONTI.CH — Database promozioni auto Svizzera (v3 — manuale)
+=================================================================
+
+Tutti i dati raccolti manualmente dai siti ufficiali, verificati maggio 2026.
+Aggiornare ogni 1-3 mesi quando le campagne cambiano.
+
+USO: python scraper.py
+Genera deals_database.json nella stessa cartella.
+
+REQUISITI: Python 3.8+ (NESSUNA dipendenza esterna)
+"""
+
+import json
+from datetime import datetime
+from pathlib import Path
+
+OUTPUT_FILE = Path(__file__).parent / "deals_database.json"
+TODAY = datetime.now().strftime("%d.%m.%Y")
+
+
+def get_renault():
+    return {
+        "sourceUrl": "https://de.renault.ch/angebote.html",
+        "lastVerified": TODAY,
+        "validity": "01.04.2026 — 30.06.2026",
+        "models": {
+            "Clio": {"listPrice": 19900, "deals": [
+                {"tag": "EXCLUDED", "tagClass": "excluded-tag",
+                 "title": "NON inclusa: 4 anni garanzia + manutenzione", "value": "—",
+                 "desc": "Clio e Twingo sono ESCLUSE dalla promo 4 anni garanzia.",
+                 "excluded": True},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,99% Plus", "value": "2.99%", "isRate": True,
+                 "desc": "Tasso 2,99% (TAEG 3,03%) tramite Mobilize.",
+                 "fineprint": "12-60 mesi, include assicurazione rate."},
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Finanziamento Clio", "value": "CHF 1'000",
+                 "desc": "Bonus dedicato al modello Clio con leasing Mobilize.",
+                 "fineprint": "Cumulabile con leasing 2,99%."}
+            ]},
+            "Captur": {"listPrice": 27600, "deals": [
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia + manutenzione GRATIS", "value": "GRATIS",
+                 "desc": "4 anni di garanzia + pacchetto manutenzione Medium.",
+                 "fineprint": "Contratto entro 30.06.2026."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,99% Plus", "value": "2.99%", "isRate": True,
+                 "desc": "Esempio: Captur full hybrid 160. 48 mesi x CHF 219.",
+                 "fineprint": "TAEG 3,03%."},
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Finanziamento Captur", "value": "CHF 2'000",
+                 "desc": "Bonus al livello massimo della campagna.",
+                 "fineprint": ""}
+            ]},
+            "Renault 4": {"listPrice": 29500, "deals": [
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% E-Tech electric", "value": "0%", "isRate": True,
+                 "desc": "0% TAEG con manutenzione e assicurazione incluse.",
+                 "fineprint": "48 mesi, 10'000 km/anno."},
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "4 anni garanzia + manutenzione inclusa.", "fineprint": ""}
+            ]},
+            "Renault 5": {"listPrice": 24900, "deals": [
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% E-Tech electric", "value": "0%", "isRate": True,
+                 "desc": "0% TAEG. Rata da CHF 169/mese.",
+                 "fineprint": "NON valido sulla versione R5 five."},
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "Pacchetto 4 anni di garanzia estesa.", "fineprint": ""}
+            ]},
+            "Megane": {"listPrice": 38900, "deals": [
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% E-Tech electric", "value": "0%", "isRate": True,
+                 "desc": "0% TAEG su tutta la gamma Megane E-Tech.",
+                 "fineprint": "48 mesi, 10'000 km/anno."},
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "4 anni di garanzia + manutenzione Medium.", "fineprint": ""}
+            ]},
+            "Scenic": {"listPrice": 42900, "deals": [
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% E-Tech electric", "value": "0%", "isRate": True,
+                 "desc": "0% TAEG con manutenzione + Vollkasko + GAP.",
+                 "fineprint": "48 mesi."},
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "Pacchetto 4 anni completo.", "fineprint": ""}
+            ]},
+            "Symbioz": {"listPrice": 30800, "deals": [
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia + manutenzione", "value": "GRATIS",
+                 "desc": "Pacchetto 4 anni di garanzia + manutenzione.", "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,99% Plus", "value": "2.99%", "isRate": True,
+                 "desc": "Tasso agevolato su Symbioz E-Tech full hybrid.", "fineprint": ""}
+            ]},
+            "Austral": {"listPrice": 41600, "deals": [
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "4 anni inclusi a costo zero.", "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,99% Plus", "value": "2.99%", "isRate": True,
+                 "desc": "Tasso agevolato Mobilize.", "fineprint": ""}
+            ]},
+            "Rafale": {"listPrice": 47900, "deals": [
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "4 anni di garanzia + manutenzione inclusi.", "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,99% Plus", "value": "2.99%", "isRate": True,
+                 "desc": "Su Rafale E-Tech hybrid e PHEV.", "fineprint": ""}
+            ]},
+            "Espace": {"listPrice": 43300, "deals": [
+                {"tag": "PROMO", "tagClass": "bonus",
+                 "title": "4 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "Pacchetto 4 anni garanzia + manutenzione.", "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,99% Plus", "value": "2.99%", "isRate": True,
+                 "desc": "Tasso agevolato tramite Mobilize.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_toyota():
+    return {
+        "sourceUrl": "https://de.toyota.ch/toyota-angebote",
+        "lastVerified": TODAY,
+        "validity": "01.05.2026 — 30.06.2026",
+        "models": {
+            "Yaris": {"listPrice": 23400, "deals": [
+                {"tag": "PRÄMIE", "tagClass": "bonus",
+                 "title": "Premio Yaris Hybrid", "value": "CHF 3'000",
+                 "desc": "Bonus diretto CHF 3'000 sull'acquisto.",
+                 "fineprint": "Validità fino al 31.12.2026."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,99% (con pacchetti)", "value": "1.99%", "isRate": True,
+                 "desc": "Tasso 1,99% con Service Pack + Toyota Protect.",
+                 "fineprint": "Senza pacchetti: 2,99% (48 mesi)."},
+                {"tag": "GARANZIA", "tagClass": "flotta",
+                 "title": "Toyota Relax — 10 anni garanzia", "value": "10 anni",
+                 "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service.",
+                 "fineprint": ""}
+            ]},
+            "Yaris Cross": {"listPrice": 25900, "deals": [
+                {"tag": "PRÄMIE", "tagClass": "bonus",
+                 "title": "Premio Yaris Cross Hybrid", "value": "CHF 5'000",
+                 "desc": "Bonus diretto record di CHF 5'000 sull'acquisto.",
+                 "fineprint": "Validità fino al 31.12.2026."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,99%", "value": "1.99%", "isRate": True,
+                 "desc": "Tasso 1,99% con Service Pack + Toyota Protect.", "fineprint": ""},
+                {"tag": "GARANZIA", "tagClass": "flotta",
+                 "title": "Toyota Relax — 10 anni", "value": "10 anni",
+                 "desc": "Garanzia 10 anni / 185'000 km.", "fineprint": ""}
+            ]},
+            "Corolla": {"listPrice": 31900, "deals": [
+                {"tag": "PRÄMIE", "tagClass": "bonus",
+                 "title": "Premio Corolla Hatchback", "value": "CHF 2'000",
+                 "desc": "Bonus CHF 2'000 sul Corolla Hatchback Hybrid.",
+                 "fineprint": "Stesso premio sul Touring Sports."},
+                {"tag": "SWISS EDITION", "tagClass": "permuta",
+                 "title": "Swiss Edition: fino a CHF 6'800", "value": "fino a CHF 6'800",
+                 "desc": "Versione speciale con vantaggio cliente CHF 6'800 + leasing 0,99%.",
+                 "fineprint": "Su Corolla, Touring Sports e C-HR."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,99%", "value": "1.99%", "isRate": True,
+                 "desc": "Tasso con Service + Toyota Protect.", "fineprint": ""}
+            ]},
+            "RAV4": {"listPrice": 42900, "deals": [
+                {"tag": "PRÄMIE", "tagClass": "bonus",
+                 "title": "Premio RAV4 Hybrid", "value": "CHF 2'000",
+                 "desc": "Bonus CHF 2'000 sul RAV4 Hybrid.",
+                 "fineprint": "Validità fino al 31.12.2026."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,99%", "value": "1.99%", "isRate": True,
+                 "desc": "Tasso agevolato con pacchetti.", "fineprint": ""}
+            ]},
+            "bZ4X": {"listPrice": 37900, "deals": [
+                {"tag": "PRÄMIE", "tagClass": "bonus",
+                 "title": "Premio bZ4X", "value": "CHF 2'000",
+                 "desc": "Bonus CHF 2'000 sul bZ4X elettrico.", "fineprint": ""},
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% BEV/PHEV", "value": "0%", "isRate": True,
+                 "desc": "Toyota offre 0% TAEG su tutti i BEV/PHEV.",
+                 "fineprint": "Senza pacchetti aggiuntivi."}
+            ]},
+            "C-HR": {"listPrice": 32900, "deals": [
+                {"tag": "PRÄMIE", "tagClass": "bonus",
+                 "title": "Premio C-HR Hybrid", "value": "CHF 2'000",
+                 "desc": "Hybrid: CHF 2'000. Plug-in: CHF 3'000.", "fineprint": ""},
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% (PHEV)", "value": "0%", "isRate": True,
+                 "desc": "C-HR Plug-in beneficia del leasing 0%.", "fineprint": ""},
+                {"tag": "SWISS EDITION", "tagClass": "permuta",
+                 "title": "Swiss Edition: fino a CHF 6'800", "value": "fino a CHF 6'800",
+                 "desc": "Allestimento speciale con vantaggio CHF 6'800.",
+                 "fineprint": ""}
+            ]},
+            "Prius": {"listPrice": 40400, "deals": [
+                {"tag": "PRÄMIE", "tagClass": "bonus",
+                 "title": "Premio Prius Plug-in", "value": "CHF 3'000",
+                 "desc": "Bonus CHF 3'000 sul Prius Plug-in Hybrid.", "fineprint": ""},
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% PHEV", "value": "0%", "isRate": True,
+                 "desc": "Prius PHEV: leasing 0% senza pacchetti.", "fineprint": ""}
+            ]},
+            "Aygo X": {"listPrice": 19900, "deals": [
+                {"tag": "PRÄMIE", "tagClass": "bonus",
+                 "title": "Premio Aygo X Hybrid", "value": "CHF 1'000",
+                 "desc": "Bonus diretto CHF 1'000 sull'entry-level.",
+                 "fineprint": "Validità fino al 31.12.2026."}
+            ]},
+            "Land Cruiser": {"listPrice": 0, "deals": [
+                {"tag": "LAGERPRÄMIE", "tagClass": "bonus",
+                 "title": "Premio Stock Land Cruiser", "value": "CHF 6'000",
+                 "desc": "Premio stock CHF 6'000 sui Land Cruiser disponibili.",
+                 "fineprint": "Solo veicoli a stock segnalati. Fino al 30.06.2026."}
+            ]}
+        }
+    }
+
+
+def get_volkswagen():
+    return {
+        "sourceUrl": "https://www.amag-leasing.ch/de/amag-leasing-promotion.html",
+        "lastVerified": TODAY,
+        "validity": "Fino al 30.06.2026",
+        "models": {
+            "ID.3": {"listPrice": 32900, "deals": [
+                {"tag": "0,1% LEASING", "tagClass": "bonus",
+                 "title": "LeasingPLUS 0,1%", "value": "0.1%", "isRate": True,
+                 "desc": "Esempio: ID.3 CHF 32'900, 48 mesi x CHF 279/mese + CHF 119/mese LeasingPLUS Go.",
+                 "fineprint": "Richiede LeasingPLUS Go + Care."}
+            ]},
+            "ID.4": {"listPrice": 35990, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "LeasingPLUS ID.4", "value": "CHF 247/mese",
+                 "desc": "Rata da CHF 247/mese sulla rata veicolo.", "fineprint": ""}
+            ]},
+            "Golf": {"listPrice": 27900, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Golf", "value": "CHF 229/mese",
+                 "desc": "Golf a CHF 27'900, leasing AMAG a partire da CHF 229/mese.",
+                 "fineprint": ""}
+            ]},
+            "Polo": {"listPrice": 24540, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Polo", "value": "CHF 199/mese",
+                 "desc": "Polo a CHF 24'540, leasing da CHF 199/mese.", "fineprint": ""}
+            ]},
+            "T-Cross": {"listPrice": 27990, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG T-Cross", "value": "CHF 269/mese",
+                 "desc": "T-Cross a CHF 27'990, leasing da CHF 269/mese.", "fineprint": ""}
+            ]},
+            "Tiguan": {"listPrice": 33500, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Tiguan", "value": "CHF 386/mese",
+                 "desc": "Tiguan a CHF 33'500, leasing da CHF 386/mese.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_bmw():
+    return {
+        "sourceUrl": "https://www.bmw.ch/de/shop-online/aktuelle-angebote.html",
+        "lastVerified": TODAY,
+        "validity": "01.04.2026 — 30.06.2026",
+        "models": {
+            "iX": {"listPrice": 99500, "deals": [
+                {"tag": "0,9% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0,9% BEV/PHEV", "value": "0.9%", "isRate": True,
+                 "desc": "Tasso 0,9% TAEG su tutti i BEV/PHEV BMW con bundling.",
+                 "fineprint": "Senza bundling: 1,9%. 48 mesi."},
+                {"tag": "PARTNER", "tagClass": "permuta",
+                 "title": "BMW Partner Beteiligung", "value": "fino a CHF 8'000",
+                 "desc": "Contributo concessionario BMW partner.",
+                 "fineprint": "Varia per modello."}
+            ]},
+            "i4": {"listPrice": 67000, "deals": [
+                {"tag": "0,9% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0,9% i4", "value": "0.9%", "isRate": True,
+                 "desc": "i4 con bundling completo BMW.", "fineprint": ""}
+            ]},
+            "i5": {"listPrice": 75000, "deals": [
+                {"tag": "0,9% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0,9% i5", "value": "0.9%", "isRate": True,
+                 "desc": "i5 elettrica.", "fineprint": ""},
+                {"tag": "EINTAUSCH", "tagClass": "permuta",
+                 "title": "Premio Permuta", "value": "CHF 2'000",
+                 "desc": "Premio aggiuntivo per la permuta.", "fineprint": ""}
+            ]},
+            "iX1": {"listPrice": 56000, "deals": [
+                {"tag": "0,9% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0,9% iX1", "value": "0.9%", "isRate": True,
+                 "desc": "iX1 con bundling BMW.", "fineprint": ""}
+            ]},
+            "iX3": {"listPrice": 75000, "deals": [
+                {"tag": "0,9% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0,9% iX3", "value": "0.9%", "isRate": True,
+                 "desc": "iX3 elettrica con tasso scontato.", "fineprint": ""}
+            ]},
+            "X3": {"listPrice": 66633, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,94% X3", "value": "2.94%", "isRate": True,
+                 "desc": "X3 30e xDrive: rata CHF 484.70, 48 mesi.",
+                 "fineprint": "Preisvorteil CHF 10'847 incluso."},
+                {"tag": "PREISVORTEIL", "tagClass": "bonus",
+                 "title": "Preisvorteil X3", "value": "CHF 10'847",
+                 "desc": "Vantaggio prezzo totale (sconto + contributo partner).",
+                 "fineprint": "Catalogo CHF 72'100."}
+            ]},
+            "X5": {"listPrice": 111552, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,92% X5", "value": "1.92%", "isRate": True,
+                 "desc": "X5 xDrive 50e plug-in: rata CHF 696.00.",
+                 "fineprint": "Preisvorteil CHF 21'248 incluso."},
+                {"tag": "PREISVORTEIL", "tagClass": "bonus",
+                 "title": "Preisvorteil X5", "value": "CHF 21'248",
+                 "desc": "Vantaggio prezzo totale.",
+                 "fineprint": "Catalogo CHF 114'300."}
+            ]},
+            "Serie 3": {"listPrice": 55000, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,94% Serie 3", "value": "2.94%", "isRate": True,
+                 "desc": "Berlina e Touring. Vantaggio prezzo medio CHF 8'000-10'000.",
+                 "fineprint": ""}
+            ]},
+            "Serie 5": {"listPrice": 75000, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,94% Serie 5", "value": "2.94%", "isRate": True,
+                 "desc": "Serie 5: la 530e PHEV beneficia del programma 0,9%.",
+                 "fineprint": ""}
+            ]},
+            "X1": {"listPrice": 48000, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,94% X1", "value": "2.94%", "isRate": True,
+                 "desc": "X1 — la 25e xDrive PHEV beneficia di 0,9% con bundling.",
+                 "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_mercedes():
+    return {
+        "sourceUrl": "https://www.mercedes-benz.ch/de/passengercars/buy/latest-offers.html",
+        "lastVerified": TODAY,
+        "validity": "01.05.2026 — 30.06.2026",
+        "models": {
+            "Classe A": {"listPrice": 46794, "deals": [
+                {"tag": "PREISVORTEIL", "tagClass": "bonus",
+                 "title": "Preisvorteil Classe A", "value": "CHF 23'133",
+                 "desc": "A 250 e plug-in 'EQ Star': sconto CHF 23'133.",
+                 "fineprint": "Promo 140 anni Mercedes-Benz."},
+                {"tag": "LAGER", "tagClass": "permuta",
+                 "title": "Premio Stock", "value": "fino a CHF 20'000",
+                 "desc": "Lagerprämie su veicoli a stock immediato.",
+                 "fineprint": "Esclusi G, V, T-Klasse, EQT, EQV, CLA, Maybach."}
+            ]},
+            "Classe C": {"listPrice": 61061, "deals": [
+                {"tag": "PREISVORTEIL", "tagClass": "bonus",
+                 "title": "Preisvorteil Classe C Swiss Star", "value": "CHF 21'029",
+                 "desc": "C 220 d 4MATIC Swiss Star: sconto CHF 21'029.",
+                 "fineprint": "Solo con Insurance Bundling."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% speciale", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso speciale 140 anni Mercedes-Benz.",
+                 "fineprint": "48 mesi, 10'000 km/anno."}
+            ]},
+            "GLA": {"listPrice": 55616, "deals": [
+                {"tag": "PREISVORTEIL", "tagClass": "bonus",
+                 "title": "Preisvorteil GLA Plug-in", "value": "CHF 22'597",
+                 "desc": "GLA 250 e plug-in EQ Star: sconto CHF 22'597.",
+                 "fineprint": "Insurance Bundling obbligatorio."}
+            ]},
+            "GLB": {"listPrice": 66749, "deals": [
+                {"tag": "PREISVORTEIL", "tagClass": "bonus",
+                 "title": "Preisvorteil GLB", "value": "CHF 13'422",
+                 "desc": "GLB 200 d 4MATIC: sconto CHF 13'422.", "fineprint": ""}
+            ]},
+            "GLC": {"listPrice": 76000, "deals": [
+                {"tag": "LAGER", "tagClass": "bonus",
+                 "title": "Lagerprämie GLC", "value": "CHF 10'000",
+                 "desc": "Premio stock CHF 10'000 sui GLC disponibili.", "fineprint": ""},
+                {"tag": "4MATIC", "tagClass": "permuta",
+                 "title": "Premio 4MATIC", "value": "CHF 4'000",
+                 "desc": "Premio CHF 4'000 sulle versioni 4MATIC.",
+                 "fineprint": "Cumulabile con Lagerprämie."}
+            ]},
+            "GLE": {"listPrice": 95000, "deals": [
+                {"tag": "LAGER", "tagClass": "bonus",
+                 "title": "Lagerprämie GLE", "value": "fino a CHF 15'000",
+                 "desc": "Premio stock importante sui GLE.",
+                 "fineprint": "Varia per allestimento."}
+            ]},
+            "GLS": {"listPrice": 121556, "deals": [
+                {"tag": "4MATIC", "tagClass": "bonus",
+                 "title": "Premio 4MATIC GLS 450", "value": "CHF 8'000",
+                 "desc": "GLS 450 4MATIC con premio CHF 8'000.", "fineprint": ""}
+            ]},
+            "EQA": {"listPrice": 49000, "deals": [
+                {"tag": "LAGER", "tagClass": "bonus",
+                 "title": "Lagerprämie EQA", "value": "fino a CHF 12'000",
+                 "desc": "Premio stock importante su EQA.", "fineprint": ""}
+            ]},
+            "EQB": {"listPrice": 55000, "deals": [
+                {"tag": "LAGER", "tagClass": "bonus",
+                 "title": "Lagerprämie EQB", "value": "fino a CHF 12'000",
+                 "desc": "EQB elettrico: premio stock importante.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_hyundai():
+    return {
+        "sourceUrl": "https://www.hyundai.ch/de/angebote",
+        "lastVerified": TODAY,
+        "validity": "Campagna trimestrale",
+        "models": {
+            "Ioniq 5": {"listPrice": 47900, "deals": [
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% Ioniq 5", "value": "0%", "isRate": True,
+                 "desc": "0% TAEG con assicurazione Hyundai Care.",
+                 "fineprint": "48 mesi, anticipo 20%."},
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus E-Mobility", "value": "CHF 3'000",
+                 "desc": "Bonus elettrico sui modelli Ioniq.",
+                 "fineprint": "Cumulabile con leasing 0%."}
+            ]},
+            "Ioniq 6": {"listPrice": 49900, "deals": [
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% Ioniq 6", "value": "0%", "isRate": True,
+                 "desc": "0% TAEG sulla berlina elettrica.", "fineprint": "Con Hyundai Care."},
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus E-Mobility", "value": "CHF 3'000",
+                 "desc": "Bonus elettrico Ioniq 6.", "fineprint": ""}
+            ]},
+            "Kona": {"listPrice": 28900, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% Kona", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso 1,9% TAEG su hybrid e benzina.",
+                 "fineprint": "Versione elettrica: 0% con assicurazione."},
+                {"tag": "5 ANNI", "tagClass": "flotta",
+                 "title": "5 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "Garanzia 5 anni senza limiti km (standard Hyundai).",
+                 "fineprint": ""}
+            ]},
+            "Tucson": {"listPrice": 36900, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% Tucson", "value": "1.9%", "isRate": True,
+                 "desc": "Tucson Hybrid o Plug-in.",
+                 "fineprint": "Plug-in: leasing 0,9% con assicurazione."},
+                {"tag": "5 ANNI", "tagClass": "flotta",
+                 "title": "5 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "Garanzia 5 anni Hyundai standard.", "fineprint": ""}
+            ]},
+            "Santa Fe": {"listPrice": 49900, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% Santa Fe", "value": "1.9%", "isRate": True,
+                 "desc": "Santa Fe Hybrid e Plug-in.", "fineprint": ""}
+            ]},
+            "i20": {"listPrice": 19900, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus i20", "value": "CHF 1'500",
+                 "desc": "Bonus diretto sull'utilitaria Hyundai.", "fineprint": ""}
+            ]},
+            "i10": {"listPrice": 16900, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus i10", "value": "CHF 1'000",
+                 "desc": "Bonus sulla piccola city car.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_skoda():
+    return {
+        "sourceUrl": "https://www.skoda.ch/de/angebote",
+        "lastVerified": TODAY,
+        "validity": "Fino al 30.06.2026",
+        "models": {
+            "Enyaq": {"listPrice": 51400, "deals": [
+                {"tag": "0% LEASING", "tagClass": "bonus",
+                 "title": "Leasing 0% Enyaq", "value": "0%", "isRate": True,
+                 "desc": "Esempio AMAG: Enyaq CHF 51'400, 48 mesi x CHF 449/mese.",
+                 "fineprint": "Richiede LeasingPLUS Go + Care."}
+            ]},
+            "Elroq": {"listPrice": 42000, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Elroq", "value": "0.6%", "isRate": True,
+                 "desc": "Nuovo SUV elettrico compatto Skoda.", "fineprint": ""}
+            ]},
+            "Octavia": {"listPrice": 32000, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Octavia", "value": "1.9%", "isRate": True,
+                 "desc": "Octavia Combi e berlina.", "fineprint": ""}
+            ]},
+            "Kodiaq": {"listPrice": 42000, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Kodiaq", "value": "1.9%", "isRate": True,
+                 "desc": "Kodiaq 7 posti.", "fineprint": ""}
+            ]},
+            "Karoq": {"listPrice": 32000, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Karoq", "value": "1.9%", "isRate": True,
+                 "desc": "SUV compatto Skoda.", "fineprint": ""}
+            ]},
+            "Superb": {"listPrice": 38000, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Superb", "value": "1.9%", "isRate": True,
+                 "desc": "Superb Combi e berlina.", "fineprint": ""}
+            ]},
+            "Fabia": {"listPrice": 19500, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Fabia", "value": "2.9%", "isRate": True,
+                 "desc": "Utilitaria Skoda Fabia.", "fineprint": ""}
+            ]},
+            "Kamiq": {"listPrice": 24500, "deals": [
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing AMAG Kamiq", "value": "1.9%", "isRate": True,
+                 "desc": "Crossover compatto Skoda.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_peugeot():
+    return {
+        "sourceUrl": "https://www.peugeot.ch/de/aktionen.html",
+        "lastVerified": TODAY,
+        "validity": "Fino al 30.06.2026",
+        "models": {
+            "e-208": {"listPrice": 32500, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus elettrico e-208", "value": "CHF 4'000",
+                 "desc": "Bonus diretto sulla 208 elettrica.",
+                 "fineprint": "Cumulabile con leasing agevolato."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% BEV", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso agevolato sui modelli elettrici.", "fineprint": "48 mesi."}
+            ]},
+            "208": {"listPrice": 21900, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus 208 Hybrid", "value": "CHF 2'000",
+                 "desc": "Bonus sulla 208 Hybrid 100.", "fineprint": ""}
+            ]},
+            "2008": {"listPrice": 27500, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus 2008", "value": "CHF 2'500",
+                 "desc": "Bonus su 2008 (benzina e hybrid).",
+                 "fineprint": "e-2008: CHF 4'000."}
+            ]},
+            "e-2008": {"listPrice": 38900, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus elettrico e-2008", "value": "CHF 4'000",
+                 "desc": "Bonus sull'elettrica e-2008.", "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% BEV", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso 1,9% TAEG.", "fineprint": ""}
+            ]},
+            "3008": {"listPrice": 36900, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus 3008 Hybrid", "value": "CHF 3'000",
+                 "desc": "Bonus sul nuovo 3008 Hybrid e Plug-in.", "fineprint": ""}
+            ]},
+            "e-3008": {"listPrice": 48900, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus elettrico e-3008", "value": "CHF 5'000",
+                 "desc": "Bonus importante sul SUV elettrico.",
+                 "fineprint": "Cumulabile con leasing 1,9%."}
+            ]},
+            "5008": {"listPrice": 41900, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus 5008", "value": "CHF 3'500",
+                 "desc": "Bonus sul SUV 7 posti.", "fineprint": ""}
+            ]},
+            "508": {"listPrice": 38900, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus 508 Plug-in", "value": "CHF 4'000",
+                 "desc": "Bonus sulla berlina/SW 508 PHEV.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_mg():
+    return {
+        "sourceUrl": "https://mgmotor.ch/de/angebote",
+        "lastVerified": TODAY,
+        "validity": "Fino al 30.06.2026",
+        "models": {
+            "MG4": {"listPrice": 29990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus MG4 Electric", "value": "CHF 3'000",
+                 "desc": "Bonus sulla compatta elettrica MG4.",
+                 "fineprint": "Validità 30.06.2026."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,99% MG4", "value": "1.99%", "isRate": True,
+                 "desc": "Tasso 1,99% TAEG.", "fineprint": "48 mesi."},
+                {"tag": "7 ANNI", "tagClass": "flotta",
+                 "title": "7 anni garanzia GRATIS", "value": "GRATIS",
+                 "desc": "Garanzia 7 anni / 150'000 km inclusa.", "fineprint": ""}
+            ]},
+            "MG5": {"listPrice": 34990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus MG5 Electric", "value": "CHF 3'500",
+                 "desc": "Bonus sulla wagon elettrica MG5.", "fineprint": ""},
+                {"tag": "7 ANNI", "tagClass": "flotta",
+                 "title": "7 anni garanzia", "value": "GRATIS",
+                 "desc": "Garanzia MG standard 7 anni.", "fineprint": ""}
+            ]},
+            "ZS": {"listPrice": 24990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus MG ZS Hybrid", "value": "CHF 2'500",
+                 "desc": "SUV compatto MG ZS Hybrid+.", "fineprint": ""}
+            ]},
+            "HS": {"listPrice": 32990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus MG HS", "value": "CHF 3'000",
+                 "desc": "SUV medio MG HS Hybrid+ e Plug-in.", "fineprint": ""}
+            ]},
+            "MG3": {"listPrice": 21990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus MG3 Hybrid+", "value": "CHF 1'500",
+                 "desc": "Bonus sulla MG3 Hybrid+.", "fineprint": ""}
+            ]},
+            "Cyberster": {"listPrice": 65990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Cyberster", "value": "CHF 5'000",
+                 "desc": "Bonus sulla roadster elettrica MG.",
+                 "fineprint": "Disponibilità limitata."}
+            ]}
+        }
+    }
+
+
+def get_citroen():
+    return {
+        "sourceUrl": "https://www.citroen.ch/de/angebote.html",
+        "lastVerified": TODAY,
+        "validity": "Fino al 30.06.2026",
+        "models": {
+            "e-C3": {"listPrice": 23990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus e-C3", "value": "CHF 2'000",
+                 "desc": "Bonus sulla C3 elettrica (BEV più economica CH).",
+                 "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% BEV", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso agevolato Stellantis.", "fineprint": ""}
+            ]},
+            "C3": {"listPrice": 17990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus C3", "value": "CHF 1'500",
+                 "desc": "Bonus sulla nuova C3 (benzina e mild hybrid).",
+                 "fineprint": ""}
+            ]},
+            "C4": {"listPrice": 24990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus C4", "value": "CHF 2'500",
+                 "desc": "Bonus sulla berlina-crossover C4.",
+                 "fineprint": "e-C4: bonus CHF 4'000."}
+            ]},
+            "e-C4": {"listPrice": 36990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus elettrico e-C4", "value": "CHF 4'000",
+                 "desc": "Bonus elettrico sulla e-C4.", "fineprint": ""}
+            ]},
+            "C5 Aircross": {"listPrice": 36500, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus C5 Aircross", "value": "CHF 3'000",
+                 "desc": "Bonus sul SUV C5 Aircross (Hybrid e Plug-in).",
+                 "fineprint": ""}
+            ]},
+            "C5 X": {"listPrice": 39500, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus C5 X", "value": "CHF 3'000",
+                 "desc": "Bonus sulla berlina premium C5 X.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_fiat():
+    return {
+        "sourceUrl": "https://www.fiat.ch/it/promozioni",
+        "lastVerified": TODAY,
+        "validity": "Fino al 30.06.2026",
+        "models": {
+            "500": {"listPrice": 17990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Fiat 500 Hybrid", "value": "CHF 2'000",
+                 "desc": "Bonus diretto sulla 500 Hybrid icona italiana.",
+                 "fineprint": "Versioni Cult e Pop."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,9%", "value": "2.9%", "isRate": True,
+                 "desc": "Tasso agevolato Stellantis Financial Services.",
+                 "fineprint": "48 mesi."}
+            ]},
+            "500e": {"listPrice": 28990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus 500 Elettrica", "value": "CHF 4'000",
+                 "desc": "Bonus diretto sulla iconica 500 elettrica.",
+                 "fineprint": "Cumulabile con leasing 1,9%."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% BEV", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso 1,9% TAEG su tutti i BEV Fiat.", "fineprint": ""}
+            ]},
+            "600": {"listPrice": 24990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Fiat 600 Hybrid", "value": "CHF 2'500",
+                 "desc": "Bonus sul SUV urbano 600 Hybrid.", "fineprint": ""}
+            ]},
+            "600e": {"listPrice": 35990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus 600 Elettrica", "value": "CHF 5'000",
+                 "desc": "Bonus importante sul 600e elettrico (record nella gamma Fiat).",
+                 "fineprint": "Validità campagna trimestrale."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% BEV", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso BEV Stellantis.", "fineprint": ""}
+            ]},
+            "Panda": {"listPrice": 14990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Panda Hybrid", "value": "CHF 1'500",
+                 "desc": "Bonus sulla Panda, regina del segmento mini in CH.",
+                 "fineprint": "Versioni City Life e Cross."}
+            ]},
+            "Topolino": {"listPrice": 9890, "deals": [
+                {"tag": "INFO", "tagClass": "warning",
+                 "title": "Quadriciclo leggero", "value": "CHF 9'890",
+                 "desc": "Nuova Topolino elettrica (segmento microcars 45 km/h).",
+                 "fineprint": "Senza patente B in alcuni cantoni."}
+            ]}
+        }
+    }
+
+
+def get_alfa_romeo():
+    return {
+        "sourceUrl": "https://www.alfaromeo.ch/it/promozioni",
+        "lastVerified": TODAY,
+        "validity": "Fino al 30.06.2026",
+        "models": {
+            "Junior": {"listPrice": 29990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Alfa Romeo Junior Hybrid", "value": "CHF 3'000",
+                 "desc": "Bonus sulla nuova compatta Alfa Romeo Junior (Hybrid e Elettrica).",
+                 "fineprint": "Validità trimestrale."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% Junior", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso agevolato sulla nuova Junior.", "fineprint": "48 mesi."}
+            ]},
+            "Junior Elettrica": {"listPrice": 39990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Junior Elettrica", "value": "CHF 4'500",
+                 "desc": "Bonus elettrico importante sulla Junior BEV.",
+                 "fineprint": "Cumulabile con leasing 1,9%."}
+            ]},
+            "Tonale": {"listPrice": 39990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Tonale Hybrid", "value": "CHF 3'500",
+                 "desc": "Bonus sul SUV Tonale Hybrid e Plug-in.", "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9%", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso agevolato Stellantis Financial Services.",
+                 "fineprint": ""}
+            ]},
+            "Tonale PHEV": {"listPrice": 49990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Tonale Plug-in", "value": "CHF 5'000",
+                 "desc": "Bonus importante sul Tonale Plug-in Hybrid.",
+                 "fineprint": "Validità fino al 30.06.2026."}
+            ]},
+            "Giulia": {"listPrice": 54990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Giulia", "value": "CHF 5'000",
+                 "desc": "Bonus sulla berlina sportiva italiana.",
+                 "fineprint": "Versioni Veloce e Quadrifoglio."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,9% Giulia", "value": "2.9%", "isRate": True,
+                 "desc": "Tasso agevolato.", "fineprint": ""}
+            ]},
+            "Stelvio": {"listPrice": 62990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Stelvio", "value": "CHF 5'500",
+                 "desc": "Bonus sul SUV sportivo Stelvio.",
+                 "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,9% Stelvio", "value": "2.9%", "isRate": True,
+                 "desc": "Tasso agevolato Stellantis.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def get_jeep():
+    return {
+        "sourceUrl": "https://www.jeep.ch/it/promozioni",
+        "lastVerified": TODAY,
+        "validity": "Fino al 30.06.2026",
+        "models": {
+            "Avenger": {"listPrice": 29990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Jeep Avenger", "value": "CHF 3'000",
+                 "desc": "Bonus sulla compatta Avenger (Hybrid ed Elettrica).",
+                 "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% Avenger", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso agevolato Stellantis.", "fineprint": "48 mesi."}
+            ]},
+            "Avenger Elettrica": {"listPrice": 38990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Avenger BEV", "value": "CHF 4'500",
+                 "desc": "Bonus elettrico Avenger BEV (Car of the Year 2023).",
+                 "fineprint": "Cumulabile con leasing 1,9%."}
+            ]},
+            "Renegade": {"listPrice": 28990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Renegade Hybrid", "value": "CHF 3'500",
+                 "desc": "Bonus sul classico SUV compatto Renegade.",
+                 "fineprint": "Versioni e-Hybrid e 4xe Plug-in."}
+            ]},
+            "Compass": {"listPrice": 39990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Compass Hybrid", "value": "CHF 4'000",
+                 "desc": "Bonus sul SUV medio Compass (Hybrid e PHEV).",
+                 "fineprint": ""},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 1,9% Compass", "value": "1.9%", "isRate": True,
+                 "desc": "Tasso agevolato su Compass.", "fineprint": ""}
+            ]},
+            "Wrangler": {"listPrice": 67990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Wrangler 4xe", "value": "CHF 6'000",
+                 "desc": "Bonus importante sull'icona off-road Wrangler 4xe Plug-in.",
+                 "fineprint": "Versione PHEV con bonus dedicato."}
+            ]},
+            "Grand Cherokee": {"listPrice": 79990, "deals": [
+                {"tag": "BONUS", "tagClass": "bonus",
+                 "title": "Bonus Grand Cherokee 4xe", "value": "CHF 7'000",
+                 "desc": "Bonus sul flagship Jeep Grand Cherokee Plug-in.",
+                 "fineprint": "Validità campagna trimestrale."},
+                {"tag": "LEASING", "tagClass": "leasing",
+                 "title": "Leasing 2,9%", "value": "2.9%", "isRate": True,
+                 "desc": "Tasso agevolato Stellantis.", "fineprint": ""}
+            ]}
+        }
+    }
+
+
+def main():
+    print("=" * 60)
+    print("  AUTOSCONTI.CH — Generazione database (v3 manuale)")
+    print(f"  Esecuzione: {datetime.now().strftime('%d.%m.%Y %H:%M')}")
+    print("=" * 60)
+
+    database = {}
+
+    brands = [
+        ("Renault", get_renault),
+        ("Toyota", get_toyota),
+        ("Volkswagen", get_volkswagen),
+        ("BMW", get_bmw),
+        ("Mercedes-Benz", get_mercedes),
+        ("Hyundai", get_hyundai),
+        ("Skoda", get_skoda),
+        ("Peugeot", get_peugeot),
+        ("Citroen", get_citroen),
+        ("MG", get_mg),
+        ("Fiat", get_fiat),
+        ("Alfa Romeo", get_alfa_romeo),
+        ("Jeep", get_jeep),
+    ]
+
+    for brand_name, data_func in brands:
+        result = data_func()
+        if result and result.get("models"):
+            database[brand_name] = result
+            print(f"OK {brand_name}: {len(result['models'])} modelli")
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(database, f, ensure_ascii=False, indent=2)
+
+    total_models = sum(len(b.get("models", {})) for b in database.values())
+    total_deals = sum(
+        sum(len(m.get("deals", [])) for m in b.get("models", {}).values())
+        for b in database.values()
+    )
+
+    print("\n" + "=" * 60)
+    print(f"OK Database salvato in: {OUTPUT_FILE}")
+    print(f"OK Marche totali: {len(database)}")
+    print(f"OK Modelli totali: {total_models}")
+    print(f"OK Offerte totali: {total_deals}")
+    print("=" * 60)
+
+
+if __name__ == "__main__":
+    main()

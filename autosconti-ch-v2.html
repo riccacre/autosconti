@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ricerca offerte — Autosconti.ch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f9fb; --bg-elevated: #ffffff;
+    --ink: #0a1628; --ink-soft: #4a5568; --muted: #8a95a8;
+    --line: #e3e8ef; --line-soft: #f0f3f7;
+    --primary: #0066ff; --primary-dark: #0052cc; --primary-light: #e6f0ff;
+    --accent: #00d4ff; --success: #00b86b; --warning: #ff8800; --danger: #d92e2e;
+    --shadow-sm: 0 1px 2px rgba(10,22,40,0.04), 0 1px 3px rgba(10,22,40,0.06);
+    --shadow: 0 4px 6px -1px rgba(10,22,40,0.06), 0 2px 4px -1px rgba(10,22,40,0.04);
+    --shadow-lg: 0 20px 25px -5px rgba(10,22,40,0.08), 0 10px 10px -5px rgba(10,22,40,0.02);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Manrope', -apple-system, sans-serif;
+    font-size: 15px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; min-height: 100vh;
+  }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(248, 249, 251, 0.85);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner {
+    max-width: 1280px; margin: 0 auto; padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--ink);
+    font-weight: 800; font-size: 19px; letter-spacing: -0.02em;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800; font-size: 16px;
+  }
+  nav { display: flex; gap: 8px; align-items: center; }
+  nav a {
+    color: var(--ink-soft); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    padding: 8px 16px; border-radius: 8px; transition: all 0.15s;
+  }
+  nav a:hover { background: var(--line-soft); color: var(--ink); }
+  nav a.active { color: var(--ink); background: var(--line-soft); }
+  nav a.home-btn {
+    background: var(--ink); color: white;
+    padding: 10px 20px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  nav a.home-btn:hover { background: var(--primary); transform: translateY(-1px); box-shadow: var(--shadow); color: white; }
+
+  /* Brand logos */
+  .brand-logo {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800;
+    font-size: 13px; letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .brand-logo.small { width: 28px; height: 28px; font-size: 11px; border-radius: 6px; }
+  .brand-logo.xl { width: 72px; height: 72px; font-size: 22px; border-radius: 16px; }
+  .brand-logo[data-brand="Renault"] { background: #FFCC33; color: #000; }
+  .brand-logo[data-brand="Toyota"] { background: #EB0A1E; }
+  .brand-logo[data-brand="Volkswagen"] { background: #001E50; }
+  .brand-logo[data-brand="BMW"] { background: linear-gradient(135deg, #0066B1 50%, #fff 50%); color: #000; }
+  .brand-logo[data-brand="Mercedes-Benz"] { background: #1F1F1F; }
+  .brand-logo[data-brand="Hyundai"] { background: #002C5F; }
+  .brand-logo[data-brand="Skoda"] { background: #4BA82E; }
+  .brand-logo[data-brand="Peugeot"] { background: #1B1B1B; }
+  .brand-logo[data-brand="Citroen"] { background: #DA291C; }
+  .brand-logo[data-brand="MG"] { background: #D40000; }
+  .brand-logo[data-brand="Fiat"] { background: #A4001E; }
+  .brand-logo[data-brand="Alfa Romeo"] { background: linear-gradient(135deg, #B91D2F 50%, #002F5F 50%); }
+  .brand-logo[data-brand="Jeep"] { background: #2F4F2F; }
+  .brand-logo[data-brand="Audi"] { background: #BB0A30; }
+  .brand-logo[data-brand="Tesla"] { background: #CC0000; }
+  .brand-logo[data-brand="Volvo"] { background: #1C2C5B; }
+  .brand-logo[data-brand="Kia"] { background: #05141F; }
+
+  .page-header { max-width: 1280px; margin: 0 auto; padding: 60px 32px 40px; }
+  .breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--muted); margin-bottom: 16px;
+  }
+  .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+  .breadcrumb a:hover { color: var(--primary); }
+  .page-title {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.05; margin-bottom: 16px;
+  }
+  .page-title .accent {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .page-subtitle { font-size: 17px; color: var(--ink-soft); max-width: 600px; }
+
+  .search-panel { max-width: 1280px; margin: 0 auto; padding: 0 32px 40px; }
+  .search-card {
+    background: white; border-radius: 20px;
+    padding: 8px; box-shadow: var(--shadow-lg);
+    border: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1fr auto; gap: 4px;
+  }
+  .search-field {
+    padding: 18px 20px; border-radius: 14px;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .search-field:hover { background: var(--line-soft); }
+  .search-field-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+  }
+  .search-field select {
+    width: 100%; border: none; background: transparent;
+    font-family: inherit; font-size: 16px; font-weight: 600;
+    color: var(--ink); cursor: pointer; appearance: none;
+    padding-right: 20px;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%230066ff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right center; outline: none;
+  }
+  .search-field select:disabled { color: var(--muted); cursor: not-allowed; opacity: 0.6; }
+  .search-divider { width: 1px; background: var(--line); margin: 12px 0; }
+  .search-btn {
+    background: var(--primary); color: white;
+    border: none; border-radius: 14px; padding: 0 32px;
+    font-family: inherit; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  }
+  .search-btn:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); }
+  .search-btn:disabled { background: #c5cee0; cursor: not-allowed; }
+  .search-tip {
+    text-align: center; margin-top: 16px;
+    font-size: 13px; color: var(--muted);
+  }
+  .search-tip strong { color: var(--ink); }
+
+  .results-container { max-width: 1280px; margin: 0 auto; padding: 0 32px 80px; }
+  .results-empty {
+    text-align: center; padding: 80px 20px;
+    background: white; border-radius: 20px; border: 1px solid var(--line);
+  }
+  .results-empty-icon {
+    width: 80px; height: 80px;
+    margin: 0 auto 24px;
+    background: var(--primary-light); color: var(--primary);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; font-weight: 800;
+  }
+  .results-empty h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .results-empty p { color: var(--ink-soft); max-width: 400px; margin: 0 auto; }
+
+  .brand-header {
+    background: linear-gradient(135deg, var(--ink) 0%, #1a2942 100%);
+    color: white; border-radius: 24px;
+    padding: 40px; margin-bottom: 24px;
+    display: grid; grid-template-columns: auto 1fr auto auto auto;
+    gap: 32px; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .brand-header::before {
+    content: ''; position: absolute;
+    top: -50%; right: -20%; width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 60%); opacity: 0.3;
+  }
+  .brand-header > * { position: relative; z-index: 1; }
+  .brand-info-label {
+    font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
+  }
+  .brand-info-name {
+    font-size: 48px; font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .brand-stat { text-align: center; }
+  .brand-stat-value {
+    font-size: 32px; font-weight: 800;
+    color: var(--accent); letter-spacing: -0.02em; line-height: 1;
+  }
+  .brand-stat-label {
+    font-size: 11px; font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 6px;
+  }
+
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px;
+  }
+  .model-card {
+    background: white; border: 1px solid var(--line);
+    border-radius: 20px; padding: 28px;
+    transition: all 0.25s;
+  }
+  .model-card:hover {
+    transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--primary);
+  }
+  .model-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--line-soft); gap: 16px;
+  }
+  .model-info-left { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
+  .model-info-text { flex: 1; min-width: 0; }
+  .model-brand {
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+  }
+  .model-name {
+    font-size: 22px; font-weight: 800;
+    letter-spacing: -0.02em; line-height: 1.1;
+  }
+  .model-price { text-align: right; flex-shrink: 0; }
+  .model-price-label {
+    font-size: 11px; color: var(--muted); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .model-price-value {
+    font-size: 17px; font-weight: 700;
+    color: var(--ink); margin-top: 2px;
+  }
+  .deals-list { display: flex; flex-direction: column; gap: 12px; }
+  .deal-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px; border-radius: 12px;
+    background: var(--bg); transition: background 0.15s;
+  }
+  .deal-row:hover { background: var(--primary-light); }
+  .deal-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+    background: white; color: var(--primary);
+    border: 1px solid var(--line);
+  }
+  .deal-icon.zero { background: #e8f5ee; color: var(--success); border-color: #c3e6cf; font-size: 16px; }
+  .deal-icon.bonus { background: var(--primary-light); color: var(--primary); border-color: #b3d3ff; }
+  .deal-icon.warning { background: #fff4e6; color: var(--warning); border-color: #ffd9b3; }
+  .deal-icon.gift { background: #f0e8ff; color: #7c3aed; border-color: #d9c3ff; }
+  .deal-info { flex: 1; min-width: 0; }
+  .deal-title-row {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+  .deal-name {
+    font-size: 14px; font-weight: 700;
+    color: var(--ink); letter-spacing: -0.01em;
+  }
+  .deal-value-text { font-size: 14px; font-weight: 800; color: var(--primary); }
+  .deal-value-text.rate { color: var(--success); }
+  .deal-desc-small { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+  .deal-fineprint-small {
+    font-size: 11px; color: var(--muted);
+    margin-top: 4px; font-style: italic;
+  }
+  .deal-row.excluded {
+    opacity: 0.6; background: #fffbf5;
+    border: 1px dashed var(--warning);
+  }
+  .deal-row.excluded .deal-icon {
+    background: #fff4e6; color: var(--warning); border-color: #ffd9b3;
+  }
+  .model-source {
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--line-soft);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px;
+  }
+  .model-source a {
+    color: var(--primary); text-decoration: none;
+    font-weight: 600; transition: color 0.15s;
+  }
+  .model-source a:hover { color: var(--primary-dark); text-decoration: underline; }
+  .model-validity { color: var(--muted); font-weight: 500; }
+
+  .loading { text-align: center; padding: 100px 20px; color: var(--muted); }
+  .loading-spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--line); border-top-color: var(--primary);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 768px) {
+    .header-inner { padding: 14px 20px; }
+    nav { gap: 4px; }
+    nav a { padding: 8px 12px; font-size: 13px; }
+    .page-header { padding: 40px 20px 24px; }
+    .search-panel { padding: 0 20px 32px; }
+    .results-container { padding: 0 20px 60px; }
+    .search-card { grid-template-columns: 1fr; }
+    .search-divider { display: none; }
+    .search-btn { padding: 18px; }
+    .brand-header { grid-template-columns: auto 1fr; gap: 20px; padding: 28px; }
+    .brand-header .brand-stat { grid-column: span 2; }
+    .brand-info-name { font-size: 32px; }
+    .models-grid { grid-template-columns: 1fr; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .model-card, .brand-header { animation: fadeUp 0.4s ease-out backwards; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">A</span>
+      autosconti<span style="color: var(--primary)">.ch</span>
+    </a>
+    <nav>
+      <a href="index.html">Novità</a>
+      <a href="autosconti-ch-v2.html" class="active">Cerca</a>
+      <a href="index.html" class="home-btn"><span>←</span> Home</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-header">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <span>Ricerca offerte</span>
+  </div>
+  <h1 class="page-title">Tutte le offerte<br>per <span class="accent">il tuo modello.</span></h1>
+  <p class="page-subtitle">Seleziona una marca per vedere tutti i modelli con offerte, oppure scegli marca + modello per i dettagli.</p>
+</section>
+
+<section class="search-panel">
+  <div class="search-card">
+    <div class="search-field">
+      <div class="search-field-label">Marca</div>
+      <select id="brand" onchange="onBrandChange()">
+        <option value="">Seleziona marca…</option>
+      </select>
+    </div>
+    <div class="search-divider"></div>
+    <div class="search-field">
+      <div class="search-field-label">Modello (opzionale)</div>
+      <select id="model" disabled onchange="onModelChange()">
+        <option value="">Tutti i modelli</option>
+      </select>
+    </div>
+    <button class="search-btn" id="searchBtn" disabled onclick="searchDeals()">Cerca <span>→</span></button>
+  </div>
+  <div class="search-tip">
+    💡 <strong>Tip:</strong> seleziona solo la marca per vedere tutti i suoi modelli con promo.
+  </div>
+</section>
+
+<section class="results-container" id="results">
+  <div class="results-empty">
+    <div class="results-empty-icon">?</div>
+    <h3>Cosa stai cercando?</h3>
+    <p>Seleziona una marca dal menu sopra per iniziare. Vedrai tutte le promo attive per ogni modello.</p>
+  </div>
+</section>
+
+<script>
+const BRAND_LOGOS = {
+  "Renault": "R", "Toyota": "T", "Volkswagen": "VW", "BMW": "BMW",
+  "Mercedes-Benz": "MB", "Hyundai": "H", "Skoda": "Š", "Peugeot": "P",
+  "Citroen": "C", "MG": "MG", "Fiat": "F", "Alfa Romeo": "AR", "Jeep": "J",
+  "Audi": "A", "Tesla": "T", "Volvo": "V", "Kia": "K"
+};
+
+function brandLogo(brand, size = '') {
+  const sigla = BRAND_LOGOS[brand] || brand.substring(0, 2).toUpperCase();
+  return `<span class="brand-logo ${size}" data-brand="${brand}">${sigla}</span>`;
+}
+
+let dealsDatabase = {};
+
+const PLACEHOLDER_BRANDS = {
+  "Audi": ["A1", "A3", "A4", "A6", "Q3", "Q5", "Q7", "e-tron GT"],
+  "Tesla": ["Model 3", "Model Y", "Model S", "Model X"],
+  "Volvo": ["XC40", "XC60", "XC90", "EX30", "EX90"],
+  "Kia": ["Picanto", "Ceed", "Sportage", "EV6", "EV9"]
+};
+
+async function loadDealsData() {
+  try {
+    const response = await fetch('deals_database.json');
+    if (!response.ok) throw new Error('JSON non trovato');
+    return await response.json();
+  } catch (err) {
+    return getEmbeddedDealsData();
+  }
+}
+
+function getEmbeddedDealsData() {
+  return {
+    "Renault": { sourceUrl: "https://de.renault.ch/angebote.html", lastVerified: "12.05.2026", validity: "01.04.2026 — 30.06.2026", models: {
+      "Clio": { listPrice: 19900, deals: [
+        { tag: "LEASING", title: "Leasing 2,99% Plus", value: "2.99%", isRate: true, desc: "Tasso 2,99% TAEG tramite Mobilize." }
+      ]}
+    }}
+  };
+}
+
+let allBrands = {};
+const brandSelect = document.getElementById('brand');
+
+async function initDashboard() {
+  dealsDatabase = await loadDealsData();
+  allBrands = { ...dealsDatabase };
+  for (const [k, v] of Object.entries(PLACEHOLDER_BRANDS)) {
+    if (!allBrands[k]) allBrands[k] = { placeholder: true, models: v };
+  }
+
+  brandSelect.innerHTML = '<option value="">Seleziona marca…</option>';
+  Object.keys(allBrands).sort().forEach(brand => {
+    const opt = document.createElement('option');
+    opt.value = brand;
+    const hasRealData = !!dealsDatabase[brand];
+    opt.textContent = hasRealData ? `${brand}  ✓` : `${brand}  (in arrivo)`;
+    brandSelect.appendChild(opt);
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  const brandParam = params.get('brand');
+  if (brandParam && allBrands[brandParam]) {
+    brandSelect.value = brandParam;
+    onBrandChange();
+    const modelParam = params.get('model');
+    if (modelParam) {
+      setTimeout(() => {
+        document.getElementById('model').value = modelParam;
+        onModelChange();
+        searchDeals();
+      }, 50);
+    } else {
+      setTimeout(() => searchDeals(), 50);
+    }
+  }
+}
+
+function onBrandChange() {
+  const brand = document.getElementById('brand').value;
+  const modelSelect = document.getElementById('model');
+  const searchBtn = document.getElementById('searchBtn');
+  modelSelect.innerHTML = '<option value="">Tutti i modelli</option>';
+  if (!brand) {
+    modelSelect.disabled = true;
+    searchBtn.disabled = true;
+    return;
+  }
+  const data = allBrands[brand];
+  const models = data.placeholder ? data.models : Object.keys(data.models);
+  models.forEach(model => {
+    const opt = document.createElement('option');
+    opt.value = model;
+    opt.textContent = model;
+    modelSelect.appendChild(opt);
+  });
+  modelSelect.disabled = false;
+  searchBtn.disabled = false;
+}
+
+function onModelChange() { document.getElementById('searchBtn').disabled = false; }
+
+function getDealIconClass(deal) {
+  if (deal.isRate && parseFloat(deal.value) < 1) return 'zero';
+  if (deal.value === 'GRATIS') return 'gift';
+  if (deal.excluded) return 'warning';
+  return 'bonus';
+}
+
+function getDealIconText(deal) {
+  if (deal.isRate) return deal.value;
+  if (deal.value === 'GRATIS') return '✓';
+  if (deal.excluded) return '!';
+  if (deal.value && deal.value.includes('CHF')) return 'CHF';
+  return '%';
+}
+
+function renderModelCard(brand, modelName, modelData, brandData) {
+  const deals = modelData.deals || [];
+  const dealsHtml = deals.map(d => `
+    <div class="deal-row ${d.excluded ? 'excluded' : ''}">
+      <div class="deal-icon ${getDealIconClass(d)}">${getDealIconText(d)}</div>
+      <div class="deal-info">
+        <div class="deal-title-row">
+          <span class="deal-name">${d.title}</span>
+          <span class="deal-value-text ${d.isRate ? 'rate' : ''}">${d.value}${d.isRate ? '% TAEG' : ''}</span>
+        </div>
+        <div class="deal-desc-small">${d.desc || ''}</div>
+        ${d.fineprint ? `<div class="deal-fineprint-small">${d.fineprint}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="model-card">
+      <div class="model-header">
+        <div class="model-info-left">
+          ${brandLogo(brand)}
+          <div class="model-info-text">
+            <div class="model-brand">${brand}</div>
+            <div class="model-name">${modelName}</div>
+          </div>
+        </div>
+        ${modelData.listPrice > 0 ? `
+          <div class="model-price">
+            <div class="model-price-label">Prezzo da</div>
+            <div class="model-price-value">CHF ${modelData.listPrice.toLocaleString('de-CH')}</div>
+          </div>
+        ` : ''}
+      </div>
+      <div class="deals-list">${dealsHtml}</div>
+      <div class="model-source">
+        <a href="${brandData.sourceUrl}" target="_blank" rel="noopener">Fonte ufficiale ↗</a>
+        <span class="model-validity">${brandData.validity}</span>
+      </div>
+    </div>`;
+}
+
+function searchDeals() {
+  const brand = document.getElementById('brand').value;
+  const model = document.getElementById('model').value;
+  if (!brand) return;
+  const resultsEl = document.getElementById('results');
+  const brandData = dealsDatabase[brand];
+
+  if (!brandData) {
+    resultsEl.innerHTML = `
+      <div class="results-empty">
+        <div class="results-empty-icon" style="background: #fff4e6; color: var(--warning);">!</div>
+        <h3>${brand} non è ancora disponibile</h3>
+        <p>Stiamo lavorando per aggiungere ${brand} al database.</p>
+      </div>`;
+    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
+  if (!model) {
+    const allModels = Object.entries(brandData.models);
+    const totalDeals = allModels.reduce((sum, [_, m]) => sum + (m.deals || []).filter(d => !d.excluded).length, 0);
+    resultsEl.innerHTML = `
+      <div class="brand-header">
+        ${brandLogo(brand, 'xl')}
+        <div>
+          <div class="brand-info-label">Marca</div>
+          <div class="brand-info-name">${brand}</div>
+        </div>
+        <div class="brand-stat">
+          <div class="brand-stat-value">${allModels.length}</div>
+          <div class="brand-stat-label">Modelli</div>
+        </div>
+        <div class="brand-stat">
+          <div class="brand-stat-value">${totalDeals}</div>
+          <div class="brand-stat-label">Promo attive</div>
+        </div>
+        <div class="brand-stat">
+          <div class="brand-stat-value">${brandData.lastVerified}</div>
+          <div class="brand-stat-label">Aggiornato</div>
+        </div>
+      </div>
+      <div class="models-grid">
+        ${allModels.map(([modelName, modelData], i) =>
+          `<div style="animation-delay: ${i * 0.05}s;">${renderModelCard(brand, modelName, modelData, brandData)}</div>`
+        ).join('')}
+      </div>`;
+    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
+  const modelData = brandData.models[model];
+  if (!modelData) {
+    resultsEl.innerHTML = `
+      <div class="results-empty">
+        <div class="results-empty-icon" style="background: #fff4e6; color: var(--warning);">!</div>
+        <h3>${model} non ancora nel database</h3>
+        <p>Visita <a href="${brandData.sourceUrl}" target="_blank" style="color: var(--primary);">${brandData.sourceUrl}</a> per le offerte.</p>
+      </div>`;
+    return;
+  }
+
+  resultsEl.innerHTML = `<div class="models-grid">${renderModelCard(brand, model, modelData, brandData)}</div>`;
+  resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+initDashboard();
+</script>
+
+</body>
+</html>
