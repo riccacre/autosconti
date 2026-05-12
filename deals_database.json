@@ -1,0 +1,464 @@
+{
+  "Toyota": {
+    "sourceUrl": "https://de.toyota.ch/toyota-angebote",
+    "lastVerified": "12.05.2026",
+    "validity": "01.05.2026 — 30.06.2026",
+    "models": {
+      "Urban Cruiser": {
+        "listPrice": 31900,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Urban Cruiser",
+            "value": "CHF 1'000",
+            "desc": "Bonus diretto CHF 1'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "bZ4X": {
+        "listPrice": 44900,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio bZ4X",
+            "value": "CHF 2'000",
+            "desc": "Bonus diretto CHF 2'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "0% LEASING",
+            "tagClass": "bonus",
+            "title": "Leasing 0% BEV/PHEV",
+            "value": "0%",
+            "isRate": true,
+            "desc": "Toyota offre 0% TAEG su tutti i BEV e PHEV senza pacchetti aggiuntivi.",
+            "fineprint": "Contratti dal 01.05 al 30.06.2026."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "RAV4": {
+        "listPrice": 42900,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio RAV4",
+            "value": "CHF 2'000",
+            "desc": "Bonus diretto CHF 2'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Toyota Swiss Edition": {
+        "listPrice": 19900,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Toyota Swiss Edition",
+            "value": "CHF 1'000",
+            "desc": "Bonus diretto CHF 1'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Yaris": {
+        "listPrice": 23400,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Yaris",
+            "value": "CHF 3'000",
+            "desc": "Bonus diretto CHF 3'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Yaris Cross": {
+        "listPrice": 25900,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Yaris Cross",
+            "value": "CHF 5'000",
+            "desc": "Bonus diretto CHF 5'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Corolla": {
+        "listPrice": 32500,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Corolla",
+            "value": "CHF 2'000",
+            "desc": "Bonus diretto CHF 2'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Corolla Cross": {
+        "listPrice": 36200,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Corolla Cross",
+            "value": "CHF 2'000",
+            "desc": "Bonus diretto CHF 2'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "C-HR": {
+        "listPrice": 32900,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio C-HR",
+            "value": "CHF 2'000",
+            "desc": "Bonus diretto CHF 2'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Prius": {
+        "listPrice": 35900,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Prius",
+            "value": "CHF 4'000",
+            "desc": "Bonus diretto CHF 4'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "0% LEASING",
+            "tagClass": "bonus",
+            "title": "Leasing 0% BEV/PHEV",
+            "value": "0%",
+            "isRate": true,
+            "desc": "Toyota offre 0% TAEG su tutti i BEV e PHEV senza pacchetti aggiuntivi.",
+            "fineprint": "Contratti dal 01.05 al 30.06.2026."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Proace Verso Electric": {
+        "listPrice": 45900,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Proace Verso Electric",
+            "value": "CHF 4'000",
+            "desc": "Bonus diretto CHF 4'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "0% LEASING",
+            "tagClass": "bonus",
+            "title": "Leasing 0% BEV/PHEV",
+            "value": "0%",
+            "isRate": true,
+            "desc": "Toyota offre 0% TAEG su tutti i BEV e PHEV senza pacchetti aggiuntivi.",
+            "fineprint": "Contratti dal 01.05 al 30.06.2026."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Proace City Electric": {
+        "listPrice": 36213,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Proace City Electric",
+            "value": "CHF 4'000",
+            "desc": "Bonus diretto CHF 4'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "0% LEASING",
+            "tagClass": "bonus",
+            "title": "Leasing 0% BEV/PHEV",
+            "value": "0%",
+            "isRate": true,
+            "desc": "Toyota offre 0% TAEG su tutti i BEV e PHEV senza pacchetti aggiuntivi.",
+            "fineprint": "Contratti dal 01.05 al 30.06.2026."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Proace City Van": {
+        "listPrice": 26214,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Proace City Van",
+            "value": "CHF 2'000",
+            "desc": "Bonus diretto CHF 2'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "LEASING",
+            "tagClass": "leasing",
+            "title": "Leasing 1,99% (con pacchetti)",
+            "value": "1.99%",
+            "isRate": true,
+            "desc": "Tasso 1,99% con Service Pack + Toyota Protect, durate ≤36 mesi.",
+            "fineprint": "Senza pacchetti: 2,99% (≤48 mesi)."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      },
+      "Proace Van Electric": {
+        "listPrice": 64800,
+        "deals": [
+          {
+            "tag": "PRÄMIE",
+            "tagClass": "bonus",
+            "title": "Premio Proace Van Electric",
+            "value": "CHF 4'000",
+            "desc": "Bonus diretto CHF 4'000 sull'acquisto.",
+            "fineprint": "Validità fino al 31.12.2026."
+          },
+          {
+            "tag": "0% LEASING",
+            "tagClass": "bonus",
+            "title": "Leasing 0% BEV/PHEV",
+            "value": "0%",
+            "isRate": true,
+            "desc": "Toyota offre 0% TAEG su tutti i BEV e PHEV senza pacchetti aggiuntivi.",
+            "fineprint": "Contratti dal 01.05 al 30.06.2026."
+          },
+          {
+            "tag": "GARANZIA",
+            "tagClass": "flotta",
+            "title": "Toyota Relax — 10 anni garanzia",
+            "value": "10 anni",
+            "desc": "Garanzia 10 anni o 185'000 km attivata ad ogni service ufficiale.",
+            "fineprint": "Valida per tutti i Toyota dal 1° immatricolazione."
+          }
+        ]
+      }
+    }
+  },
+  "Volkswagen": {
+    "sourceUrl": "https://www.amag-leasing.ch/de/amag-leasing-promotion.html",
+    "lastVerified": "12.05.2026",
+    "validity": "Fino al 30.06.2026",
+    "models": {
+      "ID.3": {
+        "listPrice": 0,
+        "deals": [
+          {
+            "tag": "0.1% LEASING",
+            "tagClass": "bonus",
+            "title": "LeasingPLUS Go ID.3",
+            "value": "0.1%",
+            "isRate": true,
+            "desc": "Tasso AMAG Leasing 0.1% effettivo annuo.",
+            "fineprint": "Richiede LeasingPLUS Go + Care. Validità fino al 30.06.2026."
+          }
+        ]
+      },
+      "ID.Buzz": {
+        "listPrice": 0,
+        "deals": [
+          {
+            "tag": "0.0% LEASING",
+            "tagClass": "bonus",
+            "title": "LeasingPLUS Go ID.Buzz",
+            "value": "0.0%",
+            "isRate": true,
+            "desc": "Tasso AMAG Leasing 0.0% effettivo annuo.",
+            "fineprint": "Richiede LeasingPLUS Go + Care. Validità fino al 30.06.2026."
+          }
+        ]
+      }
+    }
+  }
+}
