@@ -1,0 +1,39 @@
+name: Aggiorna sconti auto
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installa librerie
+        run: pip install requests beautifulsoup4
+
+      - name: Esegui scraper
+        run: python scraper.py
+
+      - name: Commit del JSON aggiornato
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add deals_database.json
+          if git diff --staged --quiet; then
+            echo "Nessuna modifica al database"
+          else
+            git commit -m "🤖 Aggiornamento automatico sconti $(date +'%Y-%m-%d')"
+            git push
+          fi
