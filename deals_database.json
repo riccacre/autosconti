@@ -1,7 +1,7 @@
 {
   "Renault": {
     "sourceUrl": "https://de.renault.ch/angebote.html",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "01.04.2026 — 30.06.2026",
     "models": {
       "Clio": {
@@ -244,7 +244,7 @@
   },
   "Toyota": {
     "sourceUrl": "https://de.toyota.ch/toyota-angebote",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "01.05.2026 — 30.06.2026",
     "models": {
       "Yaris": {
@@ -463,7 +463,7 @@
   },
   "Volkswagen": {
     "sourceUrl": "https://www.amag-leasing.ch/de/amag-leasing-promotion.html",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Fino al 30.06.2026",
     "models": {
       "ID.3": {
@@ -549,7 +549,7 @@
   },
   "BMW": {
     "sourceUrl": "https://www.bmw.ch/de/shop-online/aktuelle-angebote.html",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "01.04.2026 — 30.06.2026",
     "models": {
       "iX": {
@@ -728,7 +728,7 @@
   },
   "Mercedes-Benz": {
     "sourceUrl": "https://www.mercedes-benz.ch/de/passengercars/buy/latest-offers.html",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "01.05.2026 — 30.06.2026",
     "models": {
       "Classe A": {
@@ -877,7 +877,7 @@
   },
   "Hyundai": {
     "sourceUrl": "https://www.hyundai.ch/de/angebote",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Campagna trimestrale",
     "models": {
       "Ioniq 5": {
@@ -1012,7 +1012,7 @@
   },
   "Skoda": {
     "sourceUrl": "https://www.skoda.ch/de/angebote",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Fino al 30.06.2026",
     "models": {
       "Enyaq": {
@@ -1131,7 +1131,7 @@
   },
   "Peugeot": {
     "sourceUrl": "https://www.peugeot.ch/de/aktionen.html",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Fino al 30.06.2026",
     "models": {
       "e-208": {
@@ -1260,7 +1260,7 @@
   },
   "Citroen": {
     "sourceUrl": "https://www.citroen.ch/de/angebote.html",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Fino al 30.06.2026",
     "models": {
       "e-C3": {
@@ -1354,7 +1354,7 @@
   },
   "MG": {
     "sourceUrl": "https://mgmotor.ch/de/angebote",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Fino al 30.06.2026",
     "models": {
       "MG4": {
@@ -1464,7 +1464,7 @@
   },
   "Fiat": {
     "sourceUrl": "https://www.fiat.ch/it/promozioni",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Fino al 30.06.2026",
     "models": {
       "500": {
@@ -1576,7 +1576,7 @@
   },
   "Alfa Romeo": {
     "sourceUrl": "https://www.alfaromeo.ch/it/promozioni",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Fino al 30.06.2026",
     "models": {
       "Junior": {
@@ -1697,7 +1697,7 @@
   },
   "Jeep": {
     "sourceUrl": "https://www.jeep.ch/it/promozioni",
-    "lastVerified": "13.06.2026",
+    "lastVerified": "14.06.2026",
     "validity": "Fino al 30.06.2026",
     "models": {
       "Avenger": {
